@@ -2,6 +2,19 @@
 
 # https://benalexkeen.com/implementing-djikstras-shortest-path-algorithm-with-python/
 
+import time
+
+def lookup(shortest_paths,end):
+    current_node = end
+    path = []
+    while current_node is not None:
+        path.append(current_node)
+        next_node = shortest_paths[current_node][0]
+        current_node = next_node
+    # Reverse path
+    path = path[::-1]
+    return path
+
 def dijsktra(nodes,links, initial, end):
     # init variable with root node
     current_node = initial
@@ -9,9 +22,16 @@ def dijsktra(nodes,links, initial, end):
     shortest_paths = {initial: (None, 0)}
     # keep track of visited nodes
     visited = []
-    
+    # counter for check steps
+    counter = 0
+
     # check if source node and destination are not the same
     while current_node != end:
+
+        print("Step = "+str(counter))
+        print("Current node = ",current_node)
+        print("Visited = ",visited)
+
         visited.append(current_node)
         destinations = nodes[current_node]
         weight_to_current_node = shortest_paths[current_node][1]
@@ -30,15 +50,13 @@ def dijsktra(nodes,links, initial, end):
             return "Route Not Possible"
         # next node is the destination with the lowest weight
         current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
-    # Work back through destinations in shortest path
-    path = []
-    while current_node is not None:
-        path.append(current_node)
-        next_node = shortest_paths[current_node][0]
-        current_node = next_node
-    # Reverse path
-    path = path[::-1]
-    return path
+        
+        counter += 1
+        print("shortest_paths = ",shortest_paths)
+        print("Next node = ",current_node)
+        print("\n")
+        # time.sleep(5)
+    return shortest_paths
 
 def main():
     nodes = {
@@ -69,7 +87,11 @@ def main():
         ('chile', 'peru'): 1
         }
     
-    print(dijsktra(nodes,links,'mexico','chile'))
+    shortest_paths = dijsktra(nodes,links,'mexico','chile')
+    
+    print("Path to colombia = ",lookup(shortest_paths,'colombia'))
+    print("Path to chile = ",lookup(shortest_paths,'chile'))
+    print("Path to venezuela = ",lookup(shortest_paths,'venezuela'))
 
 if __name__ == '__main__':
     main()
