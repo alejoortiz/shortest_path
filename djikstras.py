@@ -9,10 +9,10 @@ def dijsktra(nodes,links, initial, end):
     # whose value is a tuple of (previous node, weight)
     shortest_paths = {initial: (None, 0)}
     current_node = initial
-    visited = set()
+    visited = []
     
     while current_node != end:
-        visited.add(current_node)
+        visited.append(current_node)
         destinations = nodes[current_node]
         weight_to_current_node = shortest_paths[current_node][1]
 
@@ -30,7 +30,9 @@ def dijsktra(nodes,links, initial, end):
             return "Route Not Possible"
         # next node is the destination with the lowest weight
         current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
-    
+    print(visited)
+    print(shortest_paths)
+    print(current_node)
     # Work back through destinations in shortest path
     path = []
     while current_node is not None:
