@@ -3,8 +3,24 @@
 # original code and explanation is on the following link
 # https://benalexkeen.com/implementing-djikstras-shortest-path-algorithm-with-python/
 
+import json
 import time
+import os
 
+# funtion to save the shortest paths
+def save_shortest_paths(shortest_paths):
+    file = "shortest_paths.json"
+    with open(file,'w') as file_out:
+        json.dump(shortest_paths,file_out,indent=1)
+
+# funtion to load the shortest paths
+def load_shortest_paths():
+    file = "shortest_paths.json"
+    with open(file, mode='r',encoding='UTF-8') as file_in:
+        data = json.load(file_in)
+    return data
+
+# funtion to search the shortest path
 def lookup(shortest_paths,end):
     current_node = end
     path = []
@@ -16,6 +32,7 @@ def lookup(shortest_paths,end):
     path = path[::-1]
     return path
 
+# funtion to run algorithm
 def dijsktra(nodes,links, initial, end):
     # init variable with root node
     current_node = initial
@@ -88,7 +105,12 @@ def main():
         ('chile', 'peru'): 1
         }
     
+
     shortest_paths = dijsktra(nodes,links,'mexico','chile')
+    
+    save_shortest_paths(shortest_paths)
+
+    shortest_paths = load_shortest_paths()
 
     print("Path to colombia = ",lookup(shortest_paths,'colombia'))
     print("Path to chile = ",lookup(shortest_paths,'chile'))
