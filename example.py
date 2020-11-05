@@ -2,7 +2,7 @@
 
 def main():
 
-    print("\n my country list: \n")
+    print("\nmy country list: \n")
     my_list = [
         ("mexico", "costa rica"),
         ("mexico","peru"),
@@ -15,7 +15,7 @@ def main():
     ]
     print(my_list)
 
-    print("\n my country dictionary: \n")
+    print("\nmy country dictionary: \n")
     my_dict = {
         "mexico": ["costa_rica","peru"],
         "costa_rica": ["colombia","venezuela"],

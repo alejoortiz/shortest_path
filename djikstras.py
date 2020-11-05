@@ -4,27 +4,7 @@
 
 from collections import defaultdict
 
-class Graph():
-    def __init__(self):
-        """
-        self.edges is a dict of all possible next nodes
-        e.g. {'X': ['A', 'B', 'C', 'E'], ...}
-        self.weights has all the weights between two nodes,
-        with the two nodes as a tuple as the key
-        e.g. {('X', 'A'): 7, ('X', 'B'): 2, ...}
-        """
-        self.edges = defaultdict(list)
-        self.weights = {}
-    
-    def add_edge(self, from_node, to_node, weight):
-        # Note: assumes edges are bi-directional
-        self.edges[from_node].append(to_node)
-        self.edges[to_node].append(from_node)
-        self.weights[(from_node, to_node)] = weight
-        self.weights[(to_node, from_node)] = weight
-
-
-def dijsktra(graph, initial, end):
+def dijsktra(nodes,links, initial, end):
     # shortest paths is a dict of nodes
     # whose value is a tuple of (previous node, weight)
     shortest_paths = {initial: (None, 0)}
@@ -33,11 +13,11 @@ def dijsktra(graph, initial, end):
     
     while current_node != end:
         visited.add(current_node)
-        destinations = graph.edges[current_node]
+        destinations = nodes[current_node]
         weight_to_current_node = shortest_paths[current_node][1]
 
         for next_node in destinations:
-            weight = graph.weights[(current_node, next_node)] + weight_to_current_node
+            weight = links[(current_node, next_node)] + weight_to_current_node
             if next_node not in shortest_paths:
                 shortest_paths[next_node] = (current_node, weight)
             else:
@@ -62,27 +42,35 @@ def dijsktra(graph, initial, end):
     return path
 
 def main():
-    graph = Graph()
-    edges = [
-        ("mexico","costa rica",1),
-        ("mexico","peru",1),
-        ("costa_rica","colombia",1),
-        ("costa_rica","venezuela",1),
-        ("colombia","chile",1),
-        ("venezuela","chile",1),
-        ("venezuela","peru",1),
-        ("peru","chile",1),
-        ]
+    nodes = {
+        'mexico': ['costa_rica', 'peru'],
+        'costa_rica': ['mexico', 'colombia', 'venezuela'],
+        'peru': ['mexico', 'venezuela', 'chile'], 
+        'colombia': ['costa_rica', 'chile'], 
+        'venezuela': ['costa_rica', 'chile', 'peru'], 
+        'chile': ['colombia', 'venezuela', 'peru']
+        }
     
-    for edge in edges:
-        graph.add_edge(*edge)
-
-    print("\n\n\n\n")
-    print(graph.edges)
-    print("\n\n\n\n")
-    print(graph.weights)
-    print("\n\n\n\n")
-    print(dijsktra(graph,'mexico','chile'))
+    links = {
+        ('mexico', 'costa_rica'): 1,
+        ('costa_rica', 'mexico'): 1,
+        ('mexico', 'peru'): 1,
+        ('peru', 'mexico'): 1,
+        ('costa_rica','colombia'): 1,
+        ('colombia', 'costa_rica'): 1,
+        ('costa_rica', 'venezuela'): 1,
+        ('venezuela', 'costa_rica'): 1,
+        ('colombia', 'chile'): 1,
+        ('chile', 'colombia'): 1,
+        ('venezuela', 'chile'): 1,
+        ('chile', 'venezuela'): 1,
+        ('venezuela', 'peru'): 1,
+        ('peru', 'venezuela'): 1,
+        ('peru', 'chile'): 1,
+        ('chile', 'peru'): 1
+        }
+    
+    print(dijsktra(nodes,links,'mexico','chile'))
 
 if __name__ == '__main__':
     main()
