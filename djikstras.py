@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# original code and explanation is on the following link
+# https://benalexkeen.com/implementing-djikstras-shortest-path-algorithm-with-python/
+
 import time
 
 def lookup(shortest_paths,end):
