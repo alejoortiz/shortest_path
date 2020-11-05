@@ -1,7 +1,5 @@
 #!/usr/bin/python3
 
-# https://benalexkeen.com/implementing-djikstras-shortest-path-algorithm-with-python/
-
 import time
 
 def lookup(shortest_paths,end):
@@ -88,7 +86,7 @@ def main():
         }
     
     shortest_paths = dijsktra(nodes,links,'mexico','chile')
-    
+
     print("Path to colombia = ",lookup(shortest_paths,'colombia'))
     print("Path to chile = ",lookup(shortest_paths,'chile'))
     print("Path to venezuela = ",lookup(shortest_paths,'venezuela'))
