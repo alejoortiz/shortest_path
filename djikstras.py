@@ -2,15 +2,15 @@
 
 # https://benalexkeen.com/implementing-djikstras-shortest-path-algorithm-with-python/
 
-from collections import defaultdict
-
 def dijsktra(nodes,links, initial, end):
-    # shortest paths is a dict of nodes
-    # whose value is a tuple of (previous node, weight)
-    shortest_paths = {initial: (None, 0)}
+    # init variable with root node
     current_node = initial
+    # shortest paths is a dict of nodes
+    shortest_paths = {initial: (None, 0)}
+    # keep track of visited nodes
     visited = []
     
+    # check if source node and destination are not the same
     while current_node != end:
         visited.append(current_node)
         destinations = nodes[current_node]
@@ -30,9 +30,6 @@ def dijsktra(nodes,links, initial, end):
             return "Route Not Possible"
         # next node is the destination with the lowest weight
         current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
-    print(visited)
-    print(shortest_paths)
-    print(current_node)
     # Work back through destinations in shortest path
     path = []
     while current_node is not None:
@@ -56,16 +53,16 @@ def main():
     links = {
         ('mexico', 'costa_rica'): 1,
         ('costa_rica', 'mexico'): 1,
-        ('mexico', 'peru'): 1,
-        ('peru', 'mexico'): 1,
-        ('costa_rica','colombia'): 1,
-        ('colombia', 'costa_rica'): 1,
+        ('mexico', 'peru'): 2,
+        ('peru', 'mexico'): 2,
+        ('costa_rica','colombia'): 2,
+        ('colombia', 'costa_rica'): 2,
         ('costa_rica', 'venezuela'): 1,
         ('venezuela', 'costa_rica'): 1,
         ('colombia', 'chile'): 1,
         ('chile', 'colombia'): 1,
-        ('venezuela', 'chile'): 1,
-        ('chile', 'venezuela'): 1,
+        ('venezuela', 'chile'): 2,
+        ('chile', 'venezuela'): 2,
         ('venezuela', 'peru'): 1,
         ('peru', 'venezuela'): 1,
         ('peru', 'chile'): 1,
