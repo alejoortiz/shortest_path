@@ -63,7 +63,11 @@ def dijsktra(nodes,links, initial, end):
                 if current_shortest_weight > weight:
                     shortest_paths[next_node] = (current_node, weight)
         
-        next_destinations = {node: shortest_paths[node] for node in shortest_paths if node not in visited}
+        next_destinations = {}
+        for node in shortest_paths:
+            if node not in visited:
+                next_destinations[node] = shortest_paths[node]
+
         if not next_destinations:
             return "Route Not Possible"
         # next node is the destination with the lowest weight
