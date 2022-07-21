@@ -1,0 +1,26 @@
+{
+ "mexico": [
+  null,
+  0
+ ],
+ "costa_rica": [
+  "mexico",
+  1
+ ],
+ "peru": [
+  "mexico",
+  2
+ ],
+ "colombia": [
+  "costa_rica",
+  3
+ ],
+ "chile": [
+  "costa_rica",
+  2
+ ],
+ "venezuela": [
+  "chile",
+  4
+ ]
+}

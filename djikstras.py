@@ -2,6 +2,18 @@
 
 # original code and explanation is on the following link
 # https://benalexkeen.com/implementing-djikstras-shortest-path-algorithm-with-python/
+#        |----------|     |--------|                    #
+#        |Costa Rica|--2--|Colombia|\                   #
+#        |----------|     |--------| 6                  #
+#            /       \         |      \                 #
+# |-------| 1         \        |       \                #
+# | Mexico|/           1       |        \|---------|    #
+# |-------|\            \      1        /|Venezuela|    #
+#           2            \     |       / |---------|    #
+#            \            \    |      /                 #
+#          |-------|      |--------| 2                  #
+#          |  Peru |---1--| Chile  |/                   #
+#          |-------|      |--------|                    #
 
 import json
 import time
@@ -30,10 +42,10 @@ def lookup(shortest_paths,end):
         current_node = next_node
     # Reverse path
     path = path[::-1]
-    return path
+    return (path, shortest_paths[end][1])
 
 # funtion to run algorithm
-def dijsktra(nodes,links, initial, end):
+def dijsktra(nodes,links, initial):
     # init variable with root node
     current_node = initial
     # shortest paths is a dict of nodes
@@ -44,7 +56,7 @@ def dijsktra(nodes,links, initial, end):
     counter = 0
 
     # check if source node and destination are not the same
-    while current_node != end:
+    while current_node not in visited:
 
         print("Step = "+str(counter))
         print("Current node = ",current_node)
@@ -69,7 +81,7 @@ def dijsktra(nodes,links, initial, end):
                 next_destinations[node] = shortest_paths[node]
 
         if not next_destinations:
-            return "Route Not Possible"
+            return shortest_paths
         # next node is the destination with the lowest weight
         current_node = min(next_destinations, key=lambda k: next_destinations[k][1])
         
@@ -83,10 +95,10 @@ def dijsktra(nodes,links, initial, end):
 def main():
     nodes = {
         'mexico': ['costa_rica', 'peru'],
-        'costa_rica': ['mexico', 'colombia', 'venezuela'],
-        'peru': ['mexico', 'venezuela', 'chile'], 
-        'colombia': ['costa_rica', 'chile'], 
-        'venezuela': ['costa_rica', 'chile', 'peru'], 
+        'costa_rica': ['mexico', 'colombia', 'chile'],
+        'peru': ['mexico', 'chile'], 
+        'colombia': ['costa_rica', 'chile','venezuela'], 
+        'venezuela': ['colombia', 'chile'], 
         'chile': ['colombia', 'venezuela', 'peru']
         }
     
@@ -97,20 +109,20 @@ def main():
         ('peru', 'mexico'): 2,
         ('costa_rica','colombia'): 2,
         ('colombia', 'costa_rica'): 2,
-        ('costa_rica', 'venezuela'): 1,
-        ('venezuela', 'costa_rica'): 1,
+        ('costa_rica','chile'): 1,
+        ('chile', 'costa_rica'): 1,
         ('colombia', 'chile'): 1,
         ('chile', 'colombia'): 1,
         ('venezuela', 'chile'): 2,
         ('chile', 'venezuela'): 2,
-        ('venezuela', 'peru'): 1,
-        ('peru', 'venezuela'): 1,
         ('peru', 'chile'): 1,
-        ('chile', 'peru'): 1
+        ('chile', 'peru'): 1,
+        ('venezuela', 'colombia'): 6,
+        ('colombia', 'venezuela'): 6,
         }
     
 
-    shortest_paths = dijsktra(nodes,links,'mexico','chile')
+    shortest_paths = dijsktra(nodes,links,'mexico')
     
     save_shortest_paths(shortest_paths)
 
